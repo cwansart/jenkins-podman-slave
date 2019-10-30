@@ -1,6 +1,6 @@
 FROM fedora:31
 
-COPY jenkins-podman-slave-start.sh /start.sh
+COPY start.sh /start.sh
 
 RUN dnf -y update && \
     dnf install -y podman openssh openssh-server && \
