@@ -1,20 +1,31 @@
 FROM fedora:31
 
-COPY start.sh /start.sh
-
 RUN dnf -y update && \
-    dnf install -y podman openssh openssh-server && \
+    dnf install -y podman openssh openssh-server java-1.8.0-openjdk-devel \
+                   net-tools maven && \
     dnf clean all && \
     ln -s /usr/local/bin/podman /usr/bin/docker && \
-    ssh-keygen -A && \
-    sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config && \
-    echo 'PermitRootLogin without-password' >> /etc/ssh/sshd_config
+    ssh-keygen -A
 
-RUN useradd -ms /bin/bash podman
-USER podman
+RUN useradd -m -p $(echo "podman" | openssl passwd -1 -stdin) -s /bin/bash podman
+
 WORKDIR /home/podman
-RUN ssh-keygen -t rsa -b 4096 -N "" -f ~/.ssh/id_rsa
 
-USER root
+COPY credentials.xml ./autoconnect/
+COPY slave.xml ./autoconnect/
+
+COPY tini_pub.gpg ${JENKINS_HOME}/tini_pub.gpg
+RUN curl -fsSL https://github.com/krallin/tini/releases/download/v0.18.0/tini-amd64 -o /sbin/tini \
+  && curl -fsSL https://github.com/krallin/tini/releases/download/v0.18.0/tini-amd64.asc -o /sbin/tini.asc \
+  && gpg --no-tty --import ${JENKINS_HOME}/tini_pub.gpg \
+  && gpg --verify /sbin/tini.asc \
+  && rm -rf /sbin/tini.asc /root/.gnupg \
+  && chmod +x /sbin/tini
+
 EXPOSE 22
-CMD ["sh", "/start.sh"]
+
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+ENTRYPOINT ["/sbin/tini", "--", "docker-entrypoint.sh"]
+CMD ["/usr/sbin/sshd", "-D"]
