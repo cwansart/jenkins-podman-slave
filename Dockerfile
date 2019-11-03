@@ -4,7 +4,7 @@ RUN dnf -y update && \
     dnf install -y podman openssh openssh-server java-1.8.0-openjdk-devel \
                    net-tools maven git && \
     dnf clean all && \
-    ln -s /usr/local/bin/podman /usr/bin/docker && \
+    ln -s /usr/bin/docker /usr/local/bin/podman && \
     ssh-keygen -A
 
 RUN useradd -m -p $(echo "podman" | openssl passwd -1 -stdin) -s /bin/bash podman
