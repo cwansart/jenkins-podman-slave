@@ -2,7 +2,7 @@ FROM fedora:31
 
 RUN dnf -y update && \
     dnf install -y podman openssh openssh-server java-1.8.0-openjdk-devel \
-                   net-tools maven && \
+                   net-tools maven git && \
     dnf clean all && \
     ln -s /usr/local/bin/podman /usr/bin/docker && \
     ssh-keygen -A
