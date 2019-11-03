@@ -2,6 +2,7 @@
 
 is_jenkins_master_up() {
   status=$(curl -s -o /dev/null -w "%{http_code}" $1)
+  echo "Response status is: $status"
   if [[ "$status" -eq 200 ]]; then
     return 0
   else
@@ -10,7 +11,7 @@ is_jenkins_master_up() {
 }
 
 autoconnect() {
-  MAX_TRIES=10
+  MAX_TRIES=30
   connect_counter=0
 
   while ! is_jenkins_master_up $1 && [[ $connect_counter -lt $MAX_TRIES ]]; do
