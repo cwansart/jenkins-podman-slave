@@ -43,6 +43,9 @@ autoconnect() {
   java -jar cli.jar -s $1 create-credentials-by-xml system::system::jenkins _ < autoconnect/credentials.xml
   echo "Adding node"
   java -jar cli.jar -s $1 create-node < autoconnect/slave.xml
+
+  echo "Adding Nexus to insecure registries"
+  crudini --set /etc/containers/registries.conf registries.insecure registries "['$DOCKER_SERVICE_HOST:$DOCKER_SERVICE_PORT']"
   echo "Done configuring, have fun."
 }
 
