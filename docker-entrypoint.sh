@@ -49,8 +49,8 @@ autoconnect() {
 }
 
 echo "Waiting 15 seconds before connecting..."
-wait 15
-JENKINS_URL="http://jenkins:10080"
+sleep 15
+JENKINS_URL="http://jenkins:8080"
 echo "Trying to auto connect to Jenkins master on $JENKINS_URL"
 autoconnect $JENKINS_URL
 
