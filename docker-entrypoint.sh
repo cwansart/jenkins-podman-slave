@@ -16,7 +16,7 @@ autoconnect() {
 
   while ! is_jenkins_master_up $1 && [[ $connect_counter -lt $MAX_TRIES ]]; do
     ((connect_counter++))
-    echo "Attempt $connect_counter"
+    echo "Attempt to connect to $1, attempt $connect_counter"
     sleep 3
   done
 
@@ -48,6 +48,8 @@ autoconnect() {
   echo "Done configuring, have fun."
 }
 
+echo "Waiting 15 seconds before connecting..."
+wait 15
 JENKINS_URL="http://jenkins:10080"
 echo "Trying to auto connect to Jenkins master on $JENKINS_URL"
 autoconnect $JENKINS_URL
