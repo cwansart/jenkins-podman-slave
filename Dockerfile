@@ -20,7 +20,8 @@ RUN curl -fsSL https://github.com/krallin/tini/releases/download/v0.18.0/tini-am
   rm -rf /sbin/tini.asc /root/.gnupg && \
   chmod +x /sbin/tini && \
   echo "root:root" | chpasswd && \
-  echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+  echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
+  echo "UsePrivilegeSeparation no"
 
 EXPOSE 22
 
