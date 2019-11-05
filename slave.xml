@@ -2,7 +2,7 @@
 <slave>
   <name>podman</name>
   <description></description>
-  <remoteFS>/home/podman/jenkins</remoteFS>
+  <remoteFS>/var/jenkins_home</remoteFS>
   <numExecutors>1</numExecutors>
   <mode>NORMAL</mode>
   <retentionStrategy class="hudson.slaves.RetentionStrategy$Always"/>
