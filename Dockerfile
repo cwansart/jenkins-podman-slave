@@ -7,7 +7,7 @@ RUN dnf -y update && \
     ln -s /usr/bin/podman /usr/bin/docker && \
     ssh-keygen -A
 
-WORKDIR /var/jenkins_home
+WORKDIR /home/jenkins
 
 COPY credentials.xml ./autoconnect/
 COPY slave.xml ./autoconnect/
@@ -20,8 +20,7 @@ RUN curl -fsSL https://github.com/krallin/tini/releases/download/v0.18.0/tini-am
   rm -rf /sbin/tini.asc /root/.gnupg && \
   chmod +x /sbin/tini && \
   echo "root:root" | chpasswd && \
-  echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
-  echo "UsePrivilegeSeparation no"
+  echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 
 EXPOSE 22
 
