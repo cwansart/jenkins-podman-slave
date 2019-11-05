@@ -7,7 +7,7 @@
   <mode>NORMAL</mode>
   <retentionStrategy class="hudson.slaves.RetentionStrategy$Always"/>
   <launcher class="hudson.plugins.sshslaves.SSHLauncher" plugin="ssh-slaves@1.31.0">
-    <host>jenkins-slave</host>
+    <host>jenkins-agent</host>
     <port>22</port>
     <credentialsId>podman-ssh</credentialsId>
     <launchTimeoutSeconds>210</launchTimeoutSeconds>
