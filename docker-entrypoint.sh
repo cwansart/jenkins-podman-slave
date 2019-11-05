@@ -34,7 +34,6 @@ autoconnect() {
   sed "s#<name>podman</name>#<name>podman-${HOSTNAME}</name>#g" -i autoconnect/slave.xml
 
   CONTAINER_IP_ADDRESS=$(/sbin/ifconfig eth0 | grep inet | awk -F'[: ]+' '{ print $3 }')
-  sed "s#<host></host>#<host>${CONTAINER_IP_ADDRESS}</host>#g" -i autoconnect/slave.xml
   sed "s#<key></key>#<key>${TRUST_FILE_KEY}</key>#g" -i autoconnect/slave.xml
 
   echo "Downloading Jenkins cli"
@@ -45,17 +44,12 @@ autoconnect() {
   java -jar cli.jar -s $1 create-node < autoconnect/slave.xml
 
   echo "Adding Nexus to insecure registries"
-  crudini --set /etc/containers/registries.conf registries.insecure registries "['$DOCKER_SERVICE_HOST:$DOCKER_SERVICE_PORT']"
+  crudini --set /etc/containers/registries.conf registries.insecure registries "['nexus:10080']"
   echo "Done configuring, have fun."
 }
 
-if [[ -z $JENKINS_SERVICE_HOST || -z $JENKINS_SERVICE_PORT ]]; then
-  echo "JENKINS_SERVICE_HOST or JENKINS_SERVICE_PORT not set."
-  echo "Script won't attempt to autoconnect to Jenkins master."
-else
-  JENKINS_URL="http://$JENKINS_SERVICE_HOST:$JENKINS_SERVICE_PORT"
-  echo "Trying to auto connect to Jenkins master on $JENKINS_URL"
-  autoconnect $JENKINS_URL
-fi
+JENKINS_URL="http://jenkins:10080"
+echo "Trying to auto connect to Jenkins master on $JENKINS_URL"
+autoconnect $JENKINS_URL
 
 exec "$@"
