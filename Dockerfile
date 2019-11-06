@@ -1,9 +1,9 @@
-FROM fedora:31
+FROM quay.io/podman/stable
 
 RUN dnf -y update && \
-    dnf install -y podman openssh openssh-server java-1.8.0-openjdk-devel \
-                   net-tools maven git crudini && \
-    dnf clean all && \
+    dnf install -y openssh openssh-server java-1.8.0-openjdk-devel net-tools \
+                   maven git crudini && \
+    rm -rf /var/cache /var/log/dnf* /var/log/yum.* \
     ln -s /usr/bin/podman /usr/bin/docker && \
     ssh-keygen -A
 
