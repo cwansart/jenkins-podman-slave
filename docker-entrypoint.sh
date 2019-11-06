@@ -43,8 +43,6 @@ autoconnect() {
   echo "Adding node"
   java -jar cli.jar -s $1 create-node < autoconnect/slave.xml
 
-  echo "Adding Nexus to insecure registries"
-  crudini --set /etc/containers/registries.conf registries.insecure registries "['nexus:10080']"
   echo "Done configuring, have fun."
 }
 
