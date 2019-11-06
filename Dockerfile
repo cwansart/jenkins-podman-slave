@@ -7,7 +7,7 @@ RUN dnf -y update && \
     ln -s /usr/bin/podman /usr/bin/docker && \
     ssh-keygen -A
 
-WORKDIR /home/jenkins
+WORKDIR /var/jenkins_home
 
 COPY credentials.xml ./autoconnect/
 COPY slave.xml ./autoconnect/
@@ -28,4 +28,4 @@ COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 ENTRYPOINT ["/sbin/tini", "--", "docker-entrypoint.sh"]
-CMD ["/usr/sbin/sshd", "-D", "-E", "/var/log/sshd"]
+CMD ["/usr/sbin/sshd", "-D"]
