@@ -42,9 +42,12 @@ autoconnect() {
   java -jar cli.jar -s $1 create-credentials-by-xml system::system::jenkins _ < autoconnect/credentials.xml
   echo "Adding node"
   java -jar cli.jar -s $1 create-node < autoconnect/slave.xml
+<<<<<<< HEAD
 
   echo "Adding Nexus to insecure registries"
   crudini --set /etc/containers/registries.conf registries.insecure registries "['nexus:10080']"
+=======
+>>>>>>> parent of 254d672... changing user podman to root
   echo "Done configuring, have fun."
 }
 
